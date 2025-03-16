@@ -18,4 +18,16 @@ RSpec.describe "String Calculator API", type: :request do
     expect(last_response.status).to eq(200)
     expect(last_response.body).to eq("10")
   end
+
+  it "handles newlines between numbers" do
+    get '/add?numbers=1%0A2,3'
+    expect(last_response).to be_ok
+    expect(last_response.body).to eq("6")
+  end
+
+  it "handles explicit '\\n' as part of input" do
+    get '/add?numbers=1\n2,3'
+    expect(last_response).to be_ok
+    expect(last_response.body).to eq("6")
+  end
 end

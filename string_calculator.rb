@@ -1,8 +1,8 @@
 class StringCalculator
   def self.add(numbers)
-    puts "numbers: #{numbers}"
     return 0 if numbers.empty?
 
-    numbers.split(",").map(&:to_i).sum
+    sanitized_numbers = numbers.gsub("\\n", "\n")
+    sanitized_numbers.split(/,|\n/).map(&:to_i).sum
   end
 end
