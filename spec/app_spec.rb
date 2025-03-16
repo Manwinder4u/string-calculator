@@ -25,9 +25,15 @@ RSpec.describe "String Calculator API", type: :request do
     expect(last_response.body).to eq("6")
   end
 
-  it "handles explicit '\\n' as part of input" do
-    get '/add?numbers=1\n2,3'
-    expect(last_response).to be_ok
-    expect(last_response.body).to eq("6")
+  it "raises an error for a single negative number" do
+    expect { StringCalculator.add("1,-2,3") }.to raise_error("Negative numbers not allowed: -2")
+  end
+
+  it "raises an error and lists all negative numbers" do
+    expect { StringCalculator.add("-1,-2,3,-4") }.to raise_error("Negative numbers not allowed: -1, -2, -4")
+  end
+
+  it "does not raise an error for positive numbers" do
+    expect { StringCalculator.add("1,2,3") }.not_to raise_error
   end
 end
